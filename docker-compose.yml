@@ -8,7 +8,6 @@ services:
     ports:
       - "8001:8000"
     volumes:
-      - ./backend:/app
       - cashflow_data:/app/data
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -24,7 +23,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=https://cashflow-be.automa8.its
+      - NEXT_PUBLIC_API_URL=https://cashflow-be.automa8.it
     depends_on:
       - backend
     restart: unless-stopped
