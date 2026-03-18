@@ -15,7 +15,7 @@ ENV NODE_ENV=production
 
 COPY --from=base /app/.next/standalone ./
 COPY --from=base /app/.next/static ./.next/static
-COPY --from=base /app/public ./public 2>/dev/null || true
+
 
 EXPOSE 3000
 CMD ["node", "server.js"]
