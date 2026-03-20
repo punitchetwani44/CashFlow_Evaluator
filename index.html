@@ -667,7 +667,7 @@
                 data-form-id="TKNg15hOYu4Dp7vbkhav"
                 title="Join Waitlist">
             </iframe>
-            <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+            
         </div>
     </div>
 
@@ -675,6 +675,12 @@
 function openModal() {
     document.getElementById('waitlist-modal').classList.add('active');
     document.body.style.overflow = 'hidden';
+    if (!document.getElementById('ghl-script')) {
+        var s = document.createElement('script');
+        s.id = 'ghl-script';
+        s.src = 'https://link.msgsndr.com/js/form_embed.js';
+        document.body.appendChild(s);
+    }
 }
 function closeModal() {
     document.getElementById('waitlist-modal').classList.remove('active');
