@@ -127,8 +127,8 @@
         }
 
         /* Hero Section */
-        .hero {
-            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('hero_image.png');
+        .hero { position: relative; z-index: 1;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('hero_image.png'); isolation: isolate;
             background-size: cover;
             background-position: center;
             min-height: 100vh;
@@ -448,7 +448,7 @@
 
         /* Responsive Design */
         @media (max-width: 992px) {
-            .hero {
+            .hero { position: relative; z-index: 1;
                 padding: 64px 24px;
             }
 
