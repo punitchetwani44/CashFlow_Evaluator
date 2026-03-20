@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashFlow Evaluator - Know Where Your Money Goes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #E8652A;
+            --background: #FFFFFF;
+            --dark-section: #0F0F0F;
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B6B6B;
+            --card-background: #F7F7F7;
+            --font-heading: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background-color: var(--background);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            border: none;
+            outline: none;
+        }
+
+        .btn-primary { position: relative; z-index: 10;
+            background-color: var(--accent);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 101, 42, 0.3);
+            background-color: #D65A22;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--background);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hamburger svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Hero Section */
+        .hero { pointer-events: none;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('hero_image.png');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 24px;
+        }
+
+        .hero-content { pointer-events: all; position: relative; z-index: 5;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 64px;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .hero-supporting {
+            display: block;
+            margin-top: 16px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Pain Section */
+        .pain-section {
+            background-color: var(--dark-section);
+            color: #FFFFFF;
+            padding: 120px 0;
+        }
+
+        .pain-section h2, .pain-section h3 {
+            color: #FFFFFF;
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .pain-card {
+            border-left: 2px solid var(--accent);
+            padding-left: 24px;
+        }
+
+        .pain-card p {
+            font-size: 24px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            padding: 120px 0;
+            background-color: var(--background);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            letter-spacing: -0.02em;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .benefit-card {
+            background-color: var(--card-background);
+            padding: 40px 32px;
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .benefit-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .benefit-card p {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* How it Works */
+        .how-section {
+            padding: 120px 0;
+            background-color: var(--card-background);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+        }
+
+        .step-card {
+            position: relative;
+        }
+
+        .step-number {
+            font-family: var(--font-heading);
+            font-size: 120px;
+            font-weight: 800;
+            color: var(--background);
+            line-height: 1;
+            margin-bottom: -40px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.03);
+        }
+
+        .step-content {
+            background-color: var(--background);
+            padding: 48px 32px 32px 32px;
+            border-radius: 16px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .step-content p {
+            font-size: 20px;
+            font-weight: 500;
+            font-family: var(--font-heading);
+        }
+
+        /* Testimonial */
+        .testimonial-section {
+            padding: 120px 0;
+            background-color: #FFF8F5; /* Warm light background */
+            text-align: center;
+        }
+
+        .testimonial-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quote-icon {
+            color: var(--accent);
+            margin-bottom: 32px;
+            opacity: 0.5;
+        }
+
+        .quote-icon svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        .testimonial-text {
+            font-size: 32px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+            margin-bottom: 40px;
+        }
+
+        .testimonial-author {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .testimonial-author span {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Final CTA */
+        .cta-section {
+            padding: 120px 0;
+            text-align: center;
+            background-color: var(--background);
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            margin-bottom: 32px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            background-color: var(--background);
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .footer-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .footer-copy {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background-color: #FFFFFF;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            line-height: 1;
+            padding: 4px;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-title {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero { pointer-events: none;
+                padding: 64px 24px;
+            }
+
+            .hero-content h1 {
+                font-size: 48px;
+            }
+
+            .pain-grid, .benefits-grid, .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .pain-grid, .benefits-grid, .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-text {
+                font-size: 24px;
+            }
+
+            .pain-section, .benefits-section, .how-section, .testimonial-section, .cta-section {
+                padding: 80px 0;
+            }
+            
+            .cta-section h2 {
+                font-size: 36px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar container">
+        <div class="nav-logo">CashFlow.</div>
+        <div class="nav-links">
+            <a href="#how-it-works" class="nav-link">How it works</a>
+            <button class="btn btn-primary" onclick="openModal()" >Join Waitlist</button>
+        </div>
+        <button class="hamburger">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Know Where Your Money Goes. Before It's Gone.</h1>
+            <p>Upload your bank statement. Get instant cashflow clarity — no accountant needed.</p>
+            <button class="btn btn-primary" onclick="openModal()" >Join Waitlist</button>
+            <span class="hero-supporting">Be among the first Indian MSMEs to get access.</span>
+        </div>
+    </section>
+
+    <!-- Pain Section -->
+    <section class="pain-section">
+        <div class="container pain-grid">
+            <div class="pain-card">
+                <p>You don't know if last month was actually profitable.</p>
+            </div>
+            <div class="pain-card">
+                <p>Cash is stuck in receivables while bills keep coming.</p>
+            </div>
+            <div class="pain-card">
+                <p>Your GST payment surprises you every single quarter.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section container">
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                </div>
+                <p>Upload any bank statement — PDF, Excel, or CSV</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <p>AI classifies every transaction automatically</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <p>See inflow, outflow, and net cashflow in one dashboard</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p>Know your cash runway before you run out</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <p>Spot expense spikes before they hurt</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <p>Multi-business view — all your accounts, one screen</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section id="how-it-works" class="how-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>How it works</h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <p>Upload your bank statement</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <p>AI classifies and maps every transaction</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p>See your cashflow dashboard instantly</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial-section">
+        <div class="container testimonial-content">
+            <div class="quote-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            </div>
+            <p class="testimonial-text">"I used to find out about cash crunches at the worst possible time. Since using this app, I can see exactly where my money is stuck before payday hits. It's completely changed how I run my manufacturing business."</p>
+            <p class="testimonial-author">Rajesh Gupta<br><span>Textile Manufacturer, Surat</span></p>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="cta-section container">
+        <h2>Ready to master your cashflow?</h2>
+        <button class="btn btn-primary" onclick="openModal()" >Join Waitlist</button>
+        <span class="hero-supporting">Be among the first Indian MSMEs to get access.</span>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer container">
+        <div class="footer-content">
+            <div class="footer-left">
+                <div class="nav-logo">CashFlow.</div>
+                <p>AI-powered cashflow analysis for Indian MSMEs.</p>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 CashFlow Evaluator. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Waitlist Modal -->
+    <div class="modal-overlay" id="waitlist-modal">
+        <div class="modal-card">
+            <button class="modal-close" id="close-modal">&times;</button>
+            <h3 class="modal-title">Join the Waitlist</h3>
+            <p class="modal-subtitle">Get early access to CashFlow Evaluator</p>
+            
+            <iframe
+                src="https://api.leadconnectorhq.com/widget/form/TKNg15hOYu4Dp7vbkhav"
+                style="width:100%;height:600px;border:none;border-radius:3px"
+                id="inline-TKNg15hOYu4Dp7vbkhav"
+                data-layout="{'id':'INLINE'}"
+                data-trigger-type="alwaysShow"
+                data-trigger-value=""
+                data-activation-type="alwaysActivated"
+                data-activation-value=""
+                data-deactivation-type="neverDeactivate"
+                data-deactivation-value=""
+                data-form-name="Join Waitlist"
+                data-height="688"
+                data-layout-iframe-id="inline-TKNg15hOYu4Dp7vbkhav"
+                data-form-id="TKNg15hOYu4Dp7vbkhav"
+                title="Join Waitlist">
+            </iframe>
+            <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+        </div>
+    </div>
+
+    <script>
+function openModal() {
+    document.getElementById('waitlist-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+    document.getElementById('waitlist-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('close-modal').addEventListener('click', closeModal);
+    document.getElementById('waitlist-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({behavior: 'smooth'});
+        });
+    });
+});
+</script>
+</body>
+</html>
