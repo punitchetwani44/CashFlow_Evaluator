@@ -673,7 +673,10 @@
 
     <script>
 function openModal() {
-    document.getElementById('waitlist-modal').classList.add('active');
+    var modal = document.getElementById('waitlist-modal');
+    var iframe = document.getElementById('inline-TKNg15hOYu4Dp7vbkhav');
+    iframe.src = iframe.src;
+    modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     if (!document.getElementById('ghl-script')) {
         var s = document.createElement('script');
