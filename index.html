@@ -492,7 +492,15 @@
                 text-align: center;
             }
         }
-    </style>
+    
+        /* Fix GHL iframe overlay */
+        body > iframe, 
+        body > div > iframe:not(#inline-TKNg15hOYu4Dp7vbkhav) {
+            display: none !important;
+            pointer-events: none !important;
+        }
+
+</style>
 </head>
 <body>
 
