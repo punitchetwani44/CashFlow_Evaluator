@@ -1,3 +1,8 @@
+import os
+_db_url = os.environ.get('DATABASE_URL', 'sqlite:///./cashflow.db')
+if _db_url.startswith('postgres://'):
+    _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+os.environ['DATABASE_URL'] = _db_url
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
