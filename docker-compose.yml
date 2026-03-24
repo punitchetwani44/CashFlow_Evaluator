@@ -14,6 +14,9 @@ services:
       - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
       - DATABASE_URL=${DATABASE_URL:-sqlite:///./data/cashflow.db}
       - CLASSIFICATION_CONFIDENCE_THRESHOLD=${CLASSIFICATION_CONFIDENCE_THRESHOLD:-0.7}
+    networks:
+      - default
+      - coolify
     restart: unless-stopped
 
   frontend:
@@ -30,3 +33,7 @@ services:
 
 volumes:
   cashflow_data:
+
+networks:
+  coolify:
+    external: true
