@@ -12,7 +12,7 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
-      - DATABASE_URL=sqlite:///./data/cashflow.db
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./data/cashflow.db}
       - CLASSIFICATION_CONFIDENCE_THRESHOLD=${CLASSIFICATION_CONFIDENCE_THRESHOLD:-0.7}
     restart: unless-stopped
 
